@@ -1,5 +1,4 @@
-﻿
-namespace TabletFriend
+﻿namespace TabletFriend
 {
 	public static class Events
 	{
@@ -13,5 +12,6 @@ namespace TabletFriend
 		public const string ChangeTheme = "change_theme";
 		public const string UpdateSettings = "update_settings";
 		public const string UpdateThemeList = "update_theme_list";
+		public const string LayoutChanged = "LayoutChanged";
 	}
 }

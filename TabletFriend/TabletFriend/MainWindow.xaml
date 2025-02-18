@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TabletFriend"
 		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="200" 
+        Title="TabletFriend" Height="300" Width="200" 
         AllowsTransparency="True" WindowStyle="None"
 		ShowInTaskbar="False"
 		Background="Transparent"
@@ -32,12 +32,7 @@
 		<EventTrigger RoutedEvent="Window.MouseLeave">
 			<BeginStoryboard>
 				<Storyboard>
-					<DoubleAnimation x:Name="FadeOut"
-						BeginTime="0:0:5" 
-						Storyboard.TargetProperty="(Window.Opacity)" 
-						To="{Binding MinOpacity, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}" 
-						Duration="0:0:0.5" 
-					/>
+
 				</Storyboard>
 			</BeginStoryboard>
 		</EventTrigger>

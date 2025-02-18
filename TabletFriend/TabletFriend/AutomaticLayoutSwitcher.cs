@@ -8,12 +8,13 @@ namespace TabletFriend
 	public class AutomaticLayoutSwitcher
 	{
 		private AppFocusMonitor _monitor;
-
 		private Dictionary<string, string> _appSpecificLayouts = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+		private bool _preventRedocking;
 
 		public AutomaticLayoutSwitcher(AppFocusMonitor monitor)
 		{
 			_monitor = monitor;
+			_preventRedocking = true; // Always prevent redocking in this version
 			_monitor.OnAppChanged += OnAppChanged;
 
 			OnUpdateLayoutList();
@@ -49,21 +50,39 @@ namespace TabletFriend
 
 			if (Application.Current == null)
 			{ 
-				// Yep. Can happen.
 				return;
 			}
+			
 			Application.Current.Dispatcher.Invoke(
 				delegate
 				{
 					if (MatchesApp(app, out var key))
 					{
-						EventBeacon.SendEvent(Events.ChangeLayout, key, LayoutChangeMethod.Automatic);
+						if (_preventRedocking)
+						{
+							// Use LayoutChanged event to prevent redocking
+							EventBeacon.SendEvent(Events.LayoutChanged, key, LayoutChangeMethod.Automatic);
+						}
+						else
+						{
+							// Original behavior with redocking
+							EventBeacon.SendEvent(Events.ChangeLayout, key, LayoutChangeMethod.Automatic);
+						}
 					}
 					else
 					{
 						if (AppState.LastManuallySetLayout != null)
 						{
-							EventBeacon.SendEvent(Events.ChangeLayout, AppState.LastManuallySetLayout, LayoutChangeMethod.Automatic);
+							if (_preventRedocking)
+							{
+								// Use LayoutChanged event to prevent redocking
+								EventBeacon.SendEvent(Events.LayoutChanged, AppState.LastManuallySetLayout, LayoutChangeMethod.Automatic);
+							}
+							else
+							{
+								// Original behavior with redocking
+								EventBeacon.SendEvent(Events.ChangeLayout, AppState.LastManuallySetLayout, LayoutChangeMethod.Automatic);
+							}
 						}
 					}
 				}

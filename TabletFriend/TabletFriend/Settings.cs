@@ -95,11 +95,11 @@ namespace TabletFriend
 					{
 						text = File.ReadAllText(SettingsPath)
 							.Replace("\t", "  "); // The thing doesn't like tabs.
-						break;
+						break; // This ensures that we exit the loop once the file is read.
 					}
-					catch (Exception e)
+					catch
 					{
-
+						// Handle the specific error for reading the file here (optional)
 					}
 				}
 
